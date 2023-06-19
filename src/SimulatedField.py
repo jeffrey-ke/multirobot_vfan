@@ -6,20 +6,21 @@ from matplotlib.animation import FuncAnimation
 class SimulatedField:
     
     field = None
-
+    fig = None
+    ax = None
     def __init__(self, width=1024, height=1024, feature="maximum", feature_coords=(512, 512)):
         """
         Initialization function.
         """
         self.field = self.create_heatmap(height, width, feature_coords)
-        fig, ax = plt.subplots()
-        im = ax.imshow(self.field, 
+        self.fig, self.ax = plt.subplots()
+        im = self.ax.imshow(self.field, 
                        cmap='hot', 
                        interpolation='nearest',
                        origin="lower", 
                        aspect="auto")
-        fig.colorbar(im)
-        ax.scatter(width//2, height//2, color="blue")
+        self.fig.colorbar(im)
+        self.ax.scatter(width//2, height//2, color="blue")
         plt.show()
 
     def initRobots(self, robots, poses):
