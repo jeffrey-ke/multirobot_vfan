@@ -27,8 +27,6 @@ def test_FieldMeasurement():
 
     sensor_readings = sf.updateField(robots=["0", "1", "2"], poses=[[50, 50], [50, 50], [50, 50]])
     assert sensor_readings == [1.0, 1.0, 1.0]
-
-    sensor_readings = sf.updateField(robots=["0", "1", "2"], poses=[[0, 0], [0, 0], [0, 0]])
     
     for _ in range(10): # adjust the range according to the number of points you want to check
         row = random.randint(0, height-1)
