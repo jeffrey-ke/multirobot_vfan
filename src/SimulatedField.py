@@ -12,15 +12,14 @@ class SimulatedField:
         Initialization function.
         """
         self.field = self.create_heatmap(height, width, feature_coords)
-        plt.imshow(self.field, 
-                   cmap='hot', 
-                   interpolation='nearest', 
-                   origin="lower", 
-                   aspect="auto")
-        plt.colorbar()
-        plt.xlim(auto=True)
-        plt.ylim(auto=True)
-        plt.scatter(width//2, height//2, color="blue")
+        fig, ax = plt.subplots()
+        im = ax.imshow(self.field, 
+                       cmap='hot', 
+                       interpolation='nearest',
+                       origin="lower", 
+                       aspect="auto")
+        fig.colorbar(im)
+        ax.scatter(width//2, height//2, color="blue")
         plt.show()
 
     def initRobots(self, robots, poses):
@@ -30,7 +29,9 @@ class SimulatedField:
         if len(robots) < 1:
             raise Exception("At least one robot must be added to the simulation.")
         if len(robots) != len(poses):
-            raise Exception("Not enough poses entered.")
+            raise Exception("Amount of poses provided does not match number of robots provided.")
+        
+
 
     def create_heatmap(self, rows, cols, hotspot_coords, sigma=10):
         """
