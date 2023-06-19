@@ -9,6 +9,10 @@ class SimulatedField:
     fig = None
     ax = None
     def __init__(self, width=1024, height=1024, feature="maximum", feature_coords=(512, 512)):
+    _field = None
+    _fig = None
+    _ax = None
+    _robots_dict = {}
         """
         Initialization function.
         """
