@@ -1,7 +1,9 @@
-import sys
+import time
 from src.SimulatedField import SimulatedField
 
 def test_MapCreation():
     sf = SimulatedField(width=100, height=100, feature="maximum", feature_coords=(50,50))
-    assert sf.field.shape == (100, 100)
-    sf.initRobots(robots=["0", "1", "2"], poses=[(0, 0), (2, 0), (1, 1)])
+    assert sf._field.shape == (100, 100)
+    sf.updateField(robots=["0", "1", "2"], poses=[[0, 0], [20, 0], [10, 10]])
+    sf.updateField(robots=["0", "1", "2"], poses=[[0, 0], [20, 0], [100, 100]])
+    sf.updateField(robots=["0", "1", "2"], poses=[[0, 0], [20, 0], [10, 10]])
