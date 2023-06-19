@@ -5,29 +5,42 @@ from matplotlib.animation import FuncAnimation
 
 class SimulatedField:
     
-    field = None
-    fig = None
-    ax = None
-    def __init__(self, width=1024, height=1024, feature="maximum", feature_coords=(512, 512)):
     _field = None
     _fig = None
     _ax = None
     _robots_dict = {}
+    
+    def __init__(self, width=1024, height=1024, feature="m_aximum", feature_coords=(512, 512)):
         """
         Initialization function.
         """
-        self.field = self.create_heatmap(height, width, feature_coords)
-        self.fig, self.ax = plt.subplots()
-        im = self.ax.imshow(self.field, 
+
+        plt.ion()
+
+        self._field = self.create_heatmap(height, width, feature_coords)
+        self._fig, self._ax = plt.subplots()
+
+        im = self._ax.imshow(self._field, 
                        cmap='hot', 
                        interpolation='nearest',
                        origin="lower", 
                        aspect="auto")
-        self.fig.colorbar(im)
-        self.ax.scatter(width//2, height//2, color="blue")
+        self._fig.colorbar(im)
+
+        self._robots_dict = {
+            "0": [0, 0],
+            "1": [2, 0],
+            "2": [1, 1]
+        }
+        poses = np.array(list(self._robots_dict.values()))
+        scatter = self._ax.scatter(poses[:,0], 
+                                   poses[:,1],
+                                   color="blue")
+        
+        plt.pause(0.1)
         plt.show()
 
-    def initRobots(self, robots, poses):
+    def updateField(self, robots, poses):
         """
         Places the robots on the heatmap.
         """
@@ -35,6 +48,24 @@ class SimulatedField:
             raise Exception("At least one robot must be added to the simulation.")
         if len(robots) != len(poses):
             raise Exception("Amount of poses provided does not match number of robots provided.")
+        
+        self._ax.clear()
+
+        self._robots_dict = dict(zip(robots, poses))
+        poses = np.array(list(self._robots_dict.values()))
+        scatter = self._ax.scatter(poses[:,0], 
+                                   poses[:,1],
+                                   color="blue")
+        
+        im = self._ax.imshow(self._field, 
+                       cmap='hot', 
+                       interpolation='nearest',
+                       origin="lower", 
+                       aspect="auto")
+        
+        self._fig.canvas.draw()
+        plt.pause(0.1)
+        plt.show()
         
 
 
