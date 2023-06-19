@@ -10,14 +10,14 @@ class SimulatedField:
     _ax = None
     _robots_dict = {}
     
-    def __init__(self, width=1024, height=1024, feature="m_aximum", feature_coords=(512, 512)):
+    def __init__(self, width=1024, height=1024, feature="m_aximum", feature_coords=(512, 512), feature_sigma=10):
         """
         Initialization function.
         """
 
         plt.ion()
 
-        self._field = self.create_heatmap(height, width, feature_coords)
+        self._field = self.create_heatmap(height, width, feature_coords, feature_sigma)
         self._fig, self._ax = plt.subplots()
 
         im = self._ax.imshow(self._field, 
@@ -72,6 +72,7 @@ class SimulatedField:
         plt.pause(0.1)
         plt.show()
         
+        return [self._field[x][y] for x, y in poses]
 
 
     def create_heatmap(self, rows, cols, hotspot_coords, sigma=10):
