@@ -52,12 +52,17 @@ class SimulatedField:
         self._ax.clear()
 
         self._robots_dict = dict(zip(robots, poses))
-        poses = np.array(list(self._robots_dict.values()))
-        scatter = self._ax.scatter(poses[:,0], 
-                                   poses[:,1],
-                                   color="blue")
         
-        im = self._ax.imshow(self._field, 
+        for robot in self._robots_dict.keys():
+            self._ax.annotate(robot, 
+                              (self._robots_dict[robot][0], self._robots_dict[robot][1]),#(x,y) coord
+                              color='b') 
+            
+            self._ax.scatter(self._robots_dict[robot][0], 
+                             self._robots_dict[robot][1],
+                             color="blue")
+        
+        self._ax.imshow(self._field, 
                        cmap='hot', 
                        interpolation='nearest',
                        origin="lower", 
