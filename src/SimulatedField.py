@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-
+# from SensorReadingsStamped import SensorReadingsStamped
 
 class SimulatedField:
     
@@ -9,7 +9,8 @@ class SimulatedField:
     _fig = None
     _ax = None
     _robots_dict = {}
-    
+    _robot_state = {}
+
     def __init__(self, width=1024, height=1024, feature="m_aximum", feature_coords=(512, 512), feature_sigma=10):
         """
         Initialization function.
@@ -40,22 +41,36 @@ class SimulatedField:
         plt.pause(0.1)
         plt.show()
 
-    def updateField(self, robots, poses):
+    def getGradient(self):
+        robot_vectors = []
+        
+        for robot in self._robot_state._data.keys():
+            coords = self._robot_state._data[robot]["coords"]
+            robot_vectors.append([coords[0], coords[1], self._robot_state._data[robot]["sensor_reading"]])
+        robot_vectors = np.array(robot_vectors)
+
+        R_01 = robot_vectors[1] - robot_vectors[0]
+        R_02 = robot_vectors[2] - robot_vectors[0]
+        
+        return -np.cross(R_01, R_02)
+
+    def updateField(self, robot_ids, poses):
         """
         Places the robots on the heatmap.
         """
-        if len(robots) < 1:
+        if len(robot_ids) < 1:
             raise Exception("At least one robot must be added to the simulation.")
-        if len(robots) != len(poses):
+        if len(robot_ids) != len(poses):
             raise Exception("Amount of poses provided does not match number of robots provided.")
         
         self._ax.clear()
 
-        self._robots_dict = dict(zip(robots, poses))
+        self._robots_dict = dict(zip(robot_ids, poses))
         
         for robot in self._robots_dict.keys():
             self._ax.annotate(robot, 
-                              (self._robots_dict[robot][0], self._robots_dict[robot][1]),#(x,y) coord
+                              (self._robots_dict[robot][0], 
+                               self._robots_dict[robot][1]),#(x,y) coord
                               color='b') 
             
             self._ax.scatter(self._robots_dict[robot][0], 
@@ -71,8 +86,10 @@ class SimulatedField:
         self._fig.canvas.draw()
         plt.pause(0.1)
         plt.show()
-        
-        return [self._field[x][y] for x, y in poses]
+
+        sensor_readings = [self._field[x][y] for x, y in poses]
+        self._robot_state = SensorReadingsStamped(robot_ids=robot_ids, poses=poses, sensor_readings=sensor_readings)
+        return self._robot_state
 
 
     def create_heatmap(self, rows, cols, hotspot_coords, sigma=10):
@@ -100,3 +117,16 @@ class SimulatedField:
 
 
         
+class SensorReadingsStamped:
+    _data = {}
+    _sensorReadings = None
+    def __init__(self, robot_ids, poses, sensor_readings):
+        self._sensorReadings = sensor_readings
+        for i, robot in enumerate(robot_ids):
+            self._data[robot] = {
+                                    "coords": poses[i],
+                                    "sensor_reading": sensor_readings[i]
+                                }
+            
+    def getSensorReadingsOnly(self):
+        return self._sensorReadings
