@@ -82,6 +82,21 @@ def test_GradientDirection():
     gradient_vector = -np.cross(R_01, R_02)
     print(gradient_vector)
     assert np.allclose(gradient_vector, sf.getGradient())
+
+def test_ClusterMovement():
+    sf = SimulatedField(width=100, height=100, feature="maximum", feature_coords=(50,50))
+    robot_state = sf.updateField(robot_ids=["0", "1", "2"], 
+                                     poses=[[0, 0], [20, 0], [10, 10]])
+    sf.runSim(steps=60)
+
+    robot_state = sf.updateField(robot_ids=["0", "1", "2"], 
+                                     poses=[[80, 80], [99, 80], [90, 99]])
+    sf.runSim(steps=60)
+
+    robot_state = sf.updateField(robot_ids=["0", "1", "2"], 
+                                     poses=[[0, 50], [20, 50], [10, 70]])
+    sf.runSim(steps=60)
+    assert True
     
 
 

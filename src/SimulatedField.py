@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from math import floor
 # from SensorReadingsStamped import SensorReadingsStamped
 
 class SimulatedField:
@@ -41,9 +41,24 @@ class SimulatedField:
         plt.pause(0.1)
         plt.show()
 
+    def runSim(self, steps=100):
+        for _ in range(steps):
+            robot_poses = [self._robot_state._data[robot]["coords"] for robot in self._robot_state._data.keys()]
+
+            gradient_xy = self.getGradient()[:2] 
+            for i, component in enumerate(gradient_xy):
+                gradient_xy[i] = floor(component + 1 if component > 0 else component - 1)
+
+            for i, pose in enumerate(robot_poses):
+                robot_poses[i] = (pose + gradient_xy).astype(int)
+
+            self.updateField(robot_ids=list(self._robot_state._data.keys()),
+                             poses=robot_poses)
+        
+
     def getGradient(self):
         robot_vectors = []
-        
+
         for robot in self._robot_state._data.keys():
             coords = self._robot_state._data[robot]["coords"]
             robot_vectors.append([coords[0], coords[1], self._robot_state._data[robot]["sensor_reading"]])
