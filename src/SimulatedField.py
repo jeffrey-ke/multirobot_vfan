@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from math import floor
-# from SensorReadingsStamped import SensorReadingsStamped
+from src.SensorReadingsStamped import SensorReadingsStamped
 
 class SimulatedField:
     
@@ -131,17 +131,4 @@ class SimulatedField:
         return heatmap
 
 
-        
-class SensorReadingsStamped:
-    _data = {}
-    _sensorReadings = None
-    def __init__(self, robot_ids, poses, sensor_readings):
-        self._sensorReadings = sensor_readings
-        for i, robot in enumerate(robot_ids):
-            self._data[robot] = {
-                                    "coords": poses[i],
-                                    "sensor_reading": sensor_readings[i]
-                                }
-            
-    def getSensorReadingsOnly(self):
-        return self._sensorReadings
+    
