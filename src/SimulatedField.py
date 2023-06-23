@@ -62,6 +62,7 @@ class SimulatedField:
         for robot in self._robot_state._data.keys():
             coords = self._robot_state._data[robot]["coords"]
             robot_vectors.append([coords[0], coords[1], self._robot_state._data[robot]["sensor_reading"]])
+            
         robot_vectors = np.array(robot_vectors)
 
         R_01 = robot_vectors[1] - robot_vectors[0]
