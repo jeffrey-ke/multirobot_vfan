@@ -1,6 +1,6 @@
 import time, random
 import numpy as np
-from src.SimulatedField import SimulatedField
+from src.SimulatedField.SimulatedField import SimulatedField
 
 # def test_MapCreation():
 #     sf = SimulatedField(width=100, height=100, feature="maximum", feature_coords=(50,50))

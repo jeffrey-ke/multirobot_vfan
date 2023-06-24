@@ -1,4 +1,6 @@
-# Task plan
+# VFAN Simulation
+
+My product is the simulation environment and the implementation of the control architecture in ROS that allows robots to efficiently find these unique locations.
 ## Adaptive Navigator Layer
 ### Feature estimator
 * Based on sensor measurements, compute the features, and send them to the adaptive navigator 
@@ -42,3 +44,13 @@
   * This means the field needs to know what the new positions of the robots are and graph them at every time step
   * The simulation needs to know where the robots are.
   * When the robots ask what their sensors are reading, the simulation field needs to tell them what the reading is based on where the robots are
+
+## 5-sprint Plan
+(Roughly, what are the 5 demos I want to have)
+
+1. Robots with simple extrema seeking on a SimulatedField; no cluster controller, adaptive navigator, or dedicated feature estimator. Robots are holonomic. MUST be done in ROS.
+2. Cluster controller + feature estimator + adaptive navigator implemented for extrema-seeking only.
+3. Robots are NON-holonomic.
+4. Simulating first order cluster dynamics and external noise affecting cluster movement.
+5. Closed-loop control of cluster pose and velocity.
+6. 
