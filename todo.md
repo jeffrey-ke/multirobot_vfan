@@ -45,12 +45,15 @@ My product is the simulation environment and the implementation of the control a
   * The simulation needs to know where the robots are.
   * When the robots ask what their sensors are reading, the simulation field needs to tell them what the reading is based on where the robots are
 
+## 2nd order dynamics
+* The robots need to move with acceleration when moving and when stopping
+  * This means that  
+
 ## 5-sprint Plan
 (Roughly, what are the 5 demos I want to have)
 
 1. Robots with simple extrema seeking on a SimulatedField; no cluster controller, adaptive navigator, or dedicated feature estimator. Robots are holonomic. MUST be done in ROS.
-2. Cluster controller + feature estimator + adaptive navigator implemented for extrema-seeking only.
-3. Robots are NON-holonomic.
-4. Simulating first order cluster dynamics and external noise affecting cluster movement.
-5. Closed-loop control of cluster pose and velocity.
-6. 
+2. ROS implementation of Cluster controller + feature estimator + adaptive navigator for extrema-seeking only.
+3. Upgrade demo featuring non-holonomic robots.
+4. Simulating second order cluster dynamics and external noise affecting cluster movement.
+5. Final demo featuring closed-loop control of cluster pose and velocity.
