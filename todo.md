@@ -52,8 +52,9 @@ My product is the simulation environment and the implementation of the control a
 ## 5-sprint Plan
 (Roughly, what are the 5 demos I want to have)
 
+Sprint demo description.
 1. Robots with simple extrema seeking on a SimulatedField; no cluster controller, adaptive navigator, or dedicated feature estimator. Robots are holonomic. MUST be done in ROS.
-2. ROS implementation of Cluster controller + feature estimator + adaptive navigator for extrema-seeking only.
-3. Upgrade demo featuring non-holonomic robots.
+2. ROS implementation of Cluster controller + feature estimator + adaptive navigator for extrema-seeking only. Upgrade demo featuring non-holonomic robots.
+3. Robots will be able to adaptively navigate towards a sink/source VF feature
 4. Simulating second order cluster dynamics and external noise affecting cluster movement.
 5. Final demo featuring closed-loop control of cluster pose and velocity.
