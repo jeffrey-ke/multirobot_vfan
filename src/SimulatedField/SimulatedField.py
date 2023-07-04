@@ -30,11 +30,11 @@ class SimulatedField:
         im = self._ax.imshow(self._field, 
                        cmap='hot', 
                        interpolation='nearest',
-                       origin="lower", 
+                       origin="lower",
                        aspect="auto")
         self._fig.colorbar(im)
 
-        plt.pause(0.1)
+        plt.pause(0.01)
         plt.show()
     
     def spawnFeature(self, id="maximum", location=(0,0), sigma=10):
@@ -48,11 +48,11 @@ class SimulatedField:
         self._ax.imshow(self._field, 
                        cmap='hot', 
                        interpolation='nearest',
-                       origin="lower", 
+                       origin="lower",
                        aspect="auto")
         
         self._fig.canvas.draw()
-        plt.pause(0.1)
+        plt.pause(0.001)
         plt.show()
 
     def spawnRobot(self, id, location):
@@ -94,13 +94,14 @@ class SimulatedField:
                        aspect="auto")
         
         self._fig.canvas.draw()
-        plt.pause(0.1)
+        plt.pause(0.001)
         plt.show()
         
     
     def clear(self):
         self._ax.clear()
         self._field = np.full((self._scaled_width, self._scaled_height), 0)
+        self._robot_state = {}
         self._ax.imshow(self._field, 
                        cmap='hot', 
                        interpolation='nearest',
