@@ -56,7 +56,17 @@ class SimulatedField:
         plt.show()
 
     def spawnRobot(self, id, location):
-        x,y = location
+        if id in self._robot_state.keys():
+            raise Exception("Duplicate id: " + id + ". A robot already has that id. Pick a different one.")
+        self._robot_state[id] = {"location": (-99,-99),
+                                 "sensor_reading": -99}
+        self.moveRobot(id, location)
+    
+    def moveRobot(self, id, location):
+        if id not in self._robot_state.keys():
+            raise Exception("None of the robots have that id. Check that the robot you\'re trying to move has been spawned and still exists")
+        
+        x,y = (int(location[0] * self._blocks_per_meter), int(location[1] * self._blocks_per_meter))
         sensor_reading = self._field[x][y]
         self._robot_state[id] = {"location": (x,y),
                                  "sensor_reading": sensor_reading}
