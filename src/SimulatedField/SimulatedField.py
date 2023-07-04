@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from math import floor
-from src.SensorReadingsStamped import SensorReadingsStamped
 from src.HeatMap import createHeatmap
 
 class SimulatedField:
