@@ -14,13 +14,13 @@ class SimulatedField:
     _scaled_width = 0
     _scaled_height = 0
 
-    def __init__(self, width=100, height=100, feature="maximum", feature_coords=(512, 512), feature_sigma=10):
+    def __init__(self, width=100, height=100, feature="maximum", feature_coords=(512, 512), feature_sigma=10, blocks_per_meter=10):
         """
         Initialization function.
         """
 
         plt.ion()
-
+        self._blocks_per_meter = blocks_per_meter
         self._scaled_width = width * self._blocks_per_meter
         self._scaled_height = height * self._blocks_per_meter
         self._field = np.full((self._scaled_width, self._scaled_height), 0)
