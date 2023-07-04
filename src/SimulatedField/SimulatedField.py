@@ -7,6 +7,8 @@ class SimulatedField:
     _field = None
     _fig = None
     _ax = None
+    _scatter = []
+    _labels = []
     _robot_state = {}
     _blocks_per_meter = 10
     _scaled_width = 0
@@ -58,16 +60,22 @@ class SimulatedField:
         sensor_reading = self._field[x][y]
         self._robot_state[id] = {"location": (x,y),
                                  "sensor_reading": sensor_reading}
-        self._ax.clear()
+        for label,scatter in list(zip(self._labels, self._scatter)):
+            label.remove()
+            self._labels.remove(label)
+            scatter.remove()
+            self._scatter.remove(scatter)
+
+
         for robot in list(self._robot_state.keys()):
-            self._ax.annotate(robot, 
-                              (self._robot_state._data[robot]["location"][0], 
-                               self._robot_state._data[robot]["location"][1]),#(x,y) coord
-                              color='b') 
+            self._labels.append(self._ax.annotate(robot, 
+                              (self._robot_state[robot]["location"][0], 
+                               self._robot_state[robot]["location"][1]),#(x,y) coord
+                              color="w"))
             
-            self._ax.scatter(self._robot_state._data[robot]["location"][0], 
-                             self._robot_state._data[robot]["location"][1],
-                             color="b")
+            self._scatter.append(self._ax.scatter(self._robot_state[robot]["location"][0], 
+                             self._robot_state[robot]["location"][1],
+                             color="w"))
         
         self._ax.imshow(self._field, 
                        cmap='hot', 
