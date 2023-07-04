@@ -39,7 +39,7 @@ class SimulatedField:
     
     def spawnFeature(self, id="maximum", location=(0,0), sigma=10):
         self._ax.clear()
-        adjusted_location = (location[0] * self._blocks_per_meter, location[1] * self._blocks_per_meter)
+        adjusted_location = (int(location[0] * self._blocks_per_meter), int(location[1] * self._blocks_per_meter))
         adjusted_sigma = sigma * self._blocks_per_meter
         self._field = self._field + createHeatmap(rows=self._scaled_height, 
                                                   cols=self._scaled_width, 
