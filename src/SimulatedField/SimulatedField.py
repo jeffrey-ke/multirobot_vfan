@@ -24,7 +24,7 @@ class SimulatedField:
         self._scaled_width = width * self._blocks_per_meter
         self._scaled_height = height * self._blocks_per_meter
         self._field = np.full((self._scaled_width, self._scaled_height), 0)
-
+        self._robot_state = {}
         self._fig, self._ax = plt.subplots()
 
         im = self._ax.imshow(self._field, 
