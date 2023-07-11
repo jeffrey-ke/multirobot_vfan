@@ -1,0 +1,14 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/galactic/lib/python3.8/site-packages",
+        "/home/user/repo/waypoint_profiler/install/sim_field/lib/python3.8/site-packages",
+        "/home/user/repo/waypoint_profiler/install/navigation_core/lib/python3.8/site-packages",
+        "/home/user/repo/waypoint_profiler/install/nav_core/lib/python3.8/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/ros/galactic/lib/python3.8/site-packages",
+        "/home/user/repo/waypoint_profiler/install/sim_field/lib/python3.8/site-packages",
+        "/home/user/repo/waypoint_profiler/install/navigation_core/lib/python3.8/site-packages",
+        "/home/user/repo/waypoint_profiler/install/nav_core/lib/python3.8/site-packages"
+    ]
+}
