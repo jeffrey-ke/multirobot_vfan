@@ -9,7 +9,7 @@ class Robot:
 
     def __init__(self, id, location, leader=False):
         self._id = id
-        self._pose = list(location)
+        self._pose = location
         self._is_leader = leader
 
     def readSensor(self, reading: float):

@@ -8,24 +8,29 @@ from nav_core.Topics import robot0
 
 class RobotNode(Node):
 
-    def __init__(self, id, sensor_topic, pose_topic, cmdvel_topic, pose):
-        super().__init__("Node_for_robot" + id)
-        
+    def __init__(self):
+
+        super().__init__("Node_for_robot")
+        self.declare_parameter('pose', [0.0, 0.0])
+        self.declare_parameter('id', "A")
+        pose = self.get_parameter('pose').get_parameter_value().double_array_value
+        id = self.get_parameter('id').get_parameter_value().string_value
+
         self.robot: Robot = Robot(id, pose)
 
         self.sensor_subscription = self.create_subscription(Float32, 
-                                                     sensor_topic, 
+                                                     "/r" + id + "/sensor_readings", 
                                                      self.handle_sensor, 
                                                      10)
 
         self.cmdvel_subscription = self.create_subscription(Float32MultiArray,
-                                                            cmdvel_topic,
+                                                            "/r" + id + "/cmdvel",
                                                             self.handle_cmdvel,
                                                             10)
         
         self.pose_timer = self.create_timer(0.5, self.publish_pose)
         self.pose_publisher = self.create_publisher(Float32MultiArray, 
-                                                    pose_topic, 
+                                                    "/r" + id + "/pose", 
                                                     10)
         
         
@@ -58,7 +63,7 @@ class RobotNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     
-    R0 = RobotNode(robot0["id"], robot0["sensor_topic"], robot0["pose_topic"], robot0["cmdvel_topic"], robot0["init_pose"])
+    R0 = RobotNode()
     rclpy.spin(R0)
     robot0.destroy_node()
     rclpy.shutdown()

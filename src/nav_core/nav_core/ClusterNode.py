@@ -9,13 +9,18 @@ class ClusterNode(Node):
     r0sensorReading = -99
     def __init__(self):
         super().__init__("ClusterNode")
+        self.declare_parameter('robot0_id', "0")
+        self.declare_parameter('robot1_id', "1")
+        self.declare_parameter('robot2_id', "2")
+        ids = [self.get_parameter(field).get_parameter_value().string_value for field in ["robot0_id", "robot1_id", "robot2_id"]]
+
         self.robot0sensor_subscription = self.create_subscription(Float32,
-                                                                  robot0["sensor_topic"],
+                                                                  "/r" + ids[0] + "/sensor_readings",
                                                                   self.handle_r0sensor,
                                                                   10)
         self.r0_timer = self.create_timer(0.5, self.publish_r0cmdvel)
         self.robot0cmdvel_publisher = self.create_publisher(Float32MultiArray,
-                                                            robot0["cmdvel_topic"],
+                                                            "/r" + ids[0] + "/cmdvel",
                                                             10)
         
     def publish_r0cmdvel(self):
