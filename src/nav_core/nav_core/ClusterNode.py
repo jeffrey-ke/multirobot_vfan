@@ -18,9 +18,21 @@ class ClusterNode(Node):
                                                                   "/r" + ids[0] + "/sensor_readings",
                                                                   self.handle_r0sensor,
                                                                   10)
+        
+
         self.r0_timer = self.create_timer(0.5, self.publish_r0cmdvel)
         self.robot0cmdvel_publisher = self.create_publisher(Float32MultiArray,
                                                             "/r" + ids[0] + "/cmdvel",
+                                                            10)
+        
+        self.r1_timer = self.create_timer(0.5, self.publish_r1cmdvel)
+        self.robot1cmdvel_publisher = self.create_publisher(Float32MultiArray,
+                                                            "/r" + ids[1] + "/cmdvel",
+                                                            10)
+        
+        self.r2_timer = self.create_timer(0.5, self.publish_r2cmdvel)
+        self.robot2cmdvel_publisher = self.create_publisher(Float32MultiArray,
+                                                            "/r" + ids[2] + "/cmdvel",
                                                             10)
         
     def publish_r0cmdvel(self):
@@ -33,6 +45,30 @@ class ClusterNode(Node):
         msg.layout.data_offset = 0
         msg.data = cmdvel
         self.robot0cmdvel_publisher.publish(msg)
+        self.get_logger().info('Publishing: "%s"' % msg.data)
+
+    def publish_r1cmdvel(self):
+        cmdvel = [1.0, 1.0]
+        msg = Float32MultiArray()
+        msg.layout.dim.append(MultiArrayDimension())
+        msg.layout.dim[0].label = "length"
+        msg.layout.dim[0].size = len(cmdvel)
+        msg.layout.dim[0].stride = len(cmdvel)
+        msg.layout.data_offset = 0
+        msg.data = cmdvel
+        self.robot1cmdvel_publisher.publish(msg)
+        self.get_logger().info('Publishing: "%s"' % msg.data)
+
+    def publish_r2cmdvel(self):
+        cmdvel = [1.0, 1.0]
+        msg = Float32MultiArray()
+        msg.layout.dim.append(MultiArrayDimension())
+        msg.layout.dim[0].label = "length"
+        msg.layout.dim[0].size = len(cmdvel)
+        msg.layout.dim[0].stride = len(cmdvel)
+        msg.layout.data_offset = 0
+        msg.data = cmdvel
+        self.robot2cmdvel_publisher.publish(msg)
         self.get_logger().info('Publishing: "%s"' % msg.data)
 
 
