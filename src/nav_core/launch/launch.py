@@ -11,7 +11,7 @@ def generate_launch_description():
             output='screen',
             emulate_tty=True,
             parameters=[
-                {'pose': [10.0, 10.0],
+                {'pose': [0.0, 0.0],
                  'id' : "0"}
             ]
         ),
@@ -23,7 +23,7 @@ def generate_launch_description():
             output='screen',
             emulate_tty=True,
             parameters=[
-                {'pose': [20.0, 20.0],
+                {'pose': [20.0, 0.0],
                  'id' : "1"}
             ]
         ),
@@ -35,7 +35,7 @@ def generate_launch_description():
             output='screen',
             emulate_tty=True,
             parameters=[
-                {'pose': [30.0, 30.0],
+                {'pose': [10.0, 10.0],
                  'id' : "2"}
             ]
         ),
@@ -51,12 +51,6 @@ def generate_launch_description():
                 }
             ]
         ),
-        # Node(
-        #     package='nav_core',
-        #     namespace='r1',
-        #     executable='robot',
-        #     name='r1'
-        # ),
         Node(
             package='nav_core',
             executable='Cluster',
