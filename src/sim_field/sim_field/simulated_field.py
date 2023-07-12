@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from HeatMap import createHeatmap
+from sim_field.HeatMap import createHeatmap
 
 class SimulatedField:
     
@@ -14,7 +14,7 @@ class SimulatedField:
     _scaled_width = 0
     _scaled_height = 0
 
-    def __init__(self, width=100, height=100, feature="maximum", feature_coords=(512, 512), feature_sigma=10, blocks_per_meter=10):
+    def __init__(self, width=100, height=100, feature="maximum", feature_coords=(50, 50), feature_sigma=10, blocks_per_meter=10):
         """
         Initialization function.
         """
