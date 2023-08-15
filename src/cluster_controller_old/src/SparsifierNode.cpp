@@ -15,3 +15,13 @@ int main(int argc, char* argv[]) {
     rclcpp::shutdown();
     return 0;
 }
+
+SparsifierNode::SparsifierNode(): Node("sparsifier")
+{
+    subscription_ = create_subscription<custom_msgs::msg::Vel>("/cluster/c_vel", 10, std::bind(&SparsifierNode::CVelCb, this, std::placeholders::_1));
+    publisher_ = create_publisher<custom_msgs::msg::Pose>("/robot1/wp", 10);
+}
+
+SparsifierNode::~SparsifierNode()
+{
+}
