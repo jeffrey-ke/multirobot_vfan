@@ -12,6 +12,15 @@ typedef struct CmdVel {
     double speed;
 } CmdVel;
 
+typedef struct Quaternion {
+    double w, x, y, z;
+} Quaternion;
+
+typedef struct Euler {
+    double roll, pitch, yaw;
+} Euler;
+
+
 class Controller
 {
 private:
@@ -30,6 +39,8 @@ public:
     void UpdateWp(double x, double y);
     double CalculateAngularError();
     double CalculateDistanceError();
+    Quaternion Normalize(const Quaternion& q);
+    Euler QuaternionToEuler(const Quaternion& q_in);
 
     Pose GetPose();
     Pose GetWp();

@@ -324,6 +324,7 @@
             <wheel_radius>0.4</wheel_radius>
             <odom_publish_frequency>1</odom_publish_frequency>
             <topic>/robot1/cmd_vel</topic>
+            <odom_topic>/robot1/odom</odom_topic>
         </plugin>
         
         </model>
@@ -522,6 +523,7 @@
             <wheel_radius>0.4</wheel_radius>
             <odom_publish_frequency>1</odom_publish_frequency>
             <topic>/robot2/cmd_vel</topic>
+            <odom_topic>/robot2/odom</odom_topic>
         </plugin>
         
         </model>
@@ -720,6 +722,7 @@
             <wheel_radius>0.4</wheel_radius>
             <odom_publish_frequency>1</odom_publish_frequency>
             <topic>/robot3/cmd_vel</topic>
+            <odom_topic>/robot3/odom</odom_topic>
         </plugin>
         
         </model>

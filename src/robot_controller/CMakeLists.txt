@@ -12,6 +12,7 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(turtlesim REQUIRED)
 find_package(custom_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 
 #include
 include_directories(${PROJECT_SOURCE_DIR}/include/robot_controller)
@@ -22,7 +23,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/robot_controller)
 # compile ros nodes
   ## robot node
   add_executable(RobotNode src/RobotNode.cpp)
-  ament_target_dependencies(RobotNode rclcpp std_msgs geometry_msgs turtlesim custom_msgs)
+  ament_target_dependencies(RobotNode rclcpp std_msgs geometry_msgs turtlesim custom_msgs nav_msgs)
   target_link_libraries(RobotNode Controller) 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
