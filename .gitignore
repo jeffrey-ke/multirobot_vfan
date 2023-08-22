@@ -2,3 +2,7 @@ build/
 install/
 log/
 
+__pycache__/
+old/cluster_controller_old/.vscode/c_cpp_properties.json
+.gitignore
+old/cluster_controller_old/.vscode/settings.json
