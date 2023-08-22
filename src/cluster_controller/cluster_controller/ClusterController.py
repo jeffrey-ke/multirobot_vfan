@@ -55,6 +55,8 @@ class ClusterController:
         if len(ids) != 3 or len(poses) != 3:
             raise Exception("Please provide 3 robots and their poses")
         for id, pose in zip(ids, poses):
+            if len(pose) != 3:
+                raise Exception("Pose must be [x, y, theta]")
             self.robots_pose_dict_[id] = pose
     
     def UpdatePose(self, id, pose):

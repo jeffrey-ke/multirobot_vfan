@@ -14,9 +14,10 @@ class ClusterControllerNode(Node):
     topic_subs_ = {}
     topic_pubs_ = {}
     r_dot_ = range(9)
-    c_dot_ = range(9)
+    c_dot_ = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def __init__(self):
+        super().__init__("ccnode")
         with open("/home/jeffrey/repo/ros_ws/src/cluster_controller/config/config.yaml", "r") as config_stream:
             config = load(config_stream)
         if len(config) != 3:
@@ -43,10 +44,12 @@ class ClusterControllerNode(Node):
     
     def CVelCb(self, msg: Vel):
         self.c_dot_ = [msg.x_dot, msg.y_dot, msg.th_dot, 0, 0, 0, 0, 0, 0]
+        self.get_logger().info("\n\nCC got: [" + " ".join(self.c_dot_))
 
     def OdomCb(self, id, msg: Odometry):
         x, y = msg.pose.pose.position.x, msg.pose.pose.position.y #only care about x and y
-        yaw = euler_from_quaternion([elem for elem in msg.pose.pose.orientation])[-1]
+        o = msg.pose.pose.orientation
+        yaw = euler_from_quaternion([o.w, o.x, o.y, o.z])[-1]
         self.robot_pose_dict_[id] = [x, y, yaw]
         if (len(self.robot_pose_dict_) == 3):
             self.cc_.UpdatePose(id, [x, y, yaw])
@@ -72,3 +75,6 @@ def main(args=None):
     rclpy.init(args=args)
     rclpy.spin(ClusterControllerNode())
     rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
