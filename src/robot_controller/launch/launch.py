@@ -1,6 +1,8 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.substitutions import PathJoinSubstitution
 from launch.actions import ExecuteProcess
+from ament_index_python import get_package_share_directory
 
 def generate_launch_description():
     
@@ -39,26 +41,19 @@ def generate_launch_description():
                 "name" : "robot3"
             }]
         ),
-        ExecuteProcess(cmd=[[
-        "ign gazebo -v 4 -r /home/jeffrey/repo/ros_ws/src/sim_world/models/world.xml"
-        ]]), ## odom msgs
-        ExecuteProcess(cmd=[[
-            "ros2 run ros_gz_bridge parameter_bridge /robot1/odom@nav_msgs/msg/Odometry@ignition.msgs.Odometry"
-        ]]),
-        ExecuteProcess(cmd=[[
-            "ros2 run ros_gz_bridge parameter_bridge /robot2/odom@nav_msgs/msg/Odometry@ignition.msgs.Odometry"
-        ]]),
-        ExecuteProcess(cmd=[[
-            "ros2 run ros_gz_bridge parameter_bridge /robot3/odom@nav_msgs/msg/Odometry@ignition.msgs.Odometry"
-        ]]), ## cmdvel
-        ExecuteProcess(cmd=[[
-            "ros2 run ros_gz_bridge parameter_bridge /robot1/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"
-        ]]),
-        ExecuteProcess(cmd=[[
-            "ros2 run ros_gz_bridge parameter_bridge /robot2/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"
-        ]]),
-        ExecuteProcess(cmd=[[
-            "ros2 run ros_gz_bridge parameter_bridge /robot3/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"
-        ]])
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=["/robot1/odom@nav_msgs/msg/Odometry@ignition.msgs.Odometry",
+                       "/robot2/odom@nav_msgs/msg/Odometry@ignition.msgs.Odometry",
+                       "/robot3/odom@nav_msgs/msg/Odometry@ignition.msgs.Odometry",
+                       "/robot1/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist",
+                       "/robot2/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist",
+                       "/robot3/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist"]
+        ),
+        ExecuteProcess(
+            cmd=["ign", "gazebo", 
+                 PathJoinSubstitution([get_package_share_directory("sim_world"), "models", "world.xml"])]
+        )
         
     ])
