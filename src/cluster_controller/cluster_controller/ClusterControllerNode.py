@@ -5,7 +5,7 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from custom_msgs.msg import Vel, Pose
 from tf_transformations import euler_from_quaternion
-
+import time
 from yaml import load
 class ClusterControllerNode(Node):
 
@@ -56,6 +56,7 @@ class ClusterControllerNode(Node):
             
     
     def CalculateAndPublishRDot(self):
+        self.get_logger().info("\n\nCalculating R_dot with C_dot: [" + " ".join([str(c) for c in self.c_dot_]))
         self.r_dot_ = self.cc_.CalculateRDot(self.c_dot_)
 
         r_dot_1, r_dot_2, r_dot_3 = self.r_dot_[0:3], self.r_dot_[3:6], self.r_dot_[6:9]
@@ -66,8 +67,8 @@ class ClusterControllerNode(Node):
                                             [r_dot_1, r_dot_2, r_dot_3], 
                                             [wp_msg_1, wp_msg_2, wp_msg_3]):
             cur_pose = self.robot_pose_dict_[id]
-            wp_msg.x = cur_pose[0] + r_dot[0]
-            wp_msg.y = cur_pose[1] + r_dot[1]
+            wp_msg.x = float(r_dot[0])
+            wp_msg.y = float(r_dot[1])
             wp_msg.theta = cur_pose[2] + r_dot[2]
             self.topic_pubs_[topic].publish(wp_msg)
 

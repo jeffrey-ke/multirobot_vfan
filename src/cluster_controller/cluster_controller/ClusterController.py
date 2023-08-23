@@ -79,5 +79,9 @@ class ClusterController:
             raise Exception("Big problem. You don't have 3 correct poses of three variables \
                             x, y, and theta.")
         J_with_current_values = self.Jacobian(R[0], R[1], R[2], R[3], R[4], R[5], R[6], R[7], R[8])
-        R_dot = np.linalg.inv(J_with_current_values) @ c_dot
-        return R_dot
+        np.nan_to_num(J_with_current_values, posinf=0.0, neginf=0.0, copy=False)
+
+        if (np.isclose(np.linalg.det(J_with_current_values), 0)):
+            return np.array([0, 0, 0, 0, 0, 0, 0, 0, 0])
+        else:
+            return np.linalg.inv(J_with_current_values) @ c_dot
