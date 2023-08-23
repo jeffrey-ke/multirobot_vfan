@@ -20,7 +20,9 @@ def generate_launch_description():
             executable="RobotNode",
             name="robot1",
             parameters= [{
-                "name" : "robot1"
+                "name" : "robot1",
+                "init_x": 0.0,
+                "init_y": 0.0
             }]
         ),
         Node(
@@ -29,7 +31,9 @@ def generate_launch_description():
             executable="RobotNode",
             name="robot2",
             parameters= [{
-                "name" : "robot2"
+                "name" : "robot2",
+                "init_x": 5.0,
+                "init_y": 2.5
             }]
         ),
         Node(
@@ -38,7 +42,9 @@ def generate_launch_description():
             executable="RobotNode",
             name="robot3",
             parameters= [{
-                "name" : "robot3"
+                "name" : "robot3",
+                "init_x": 0,
+                "init_y": 5.0
             }]
         ),
         Node(

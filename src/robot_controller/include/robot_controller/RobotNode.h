@@ -18,6 +18,8 @@ private:
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmdvel_pub_;
     Controller controller_;
     geometry_msgs::msg::Twist cmdvel_msg_;
+    double init_x_;
+    double init_y_;
 public:
     RobotNode();
     ~RobotNode();

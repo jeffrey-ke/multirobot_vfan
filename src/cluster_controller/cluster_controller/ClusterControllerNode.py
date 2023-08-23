@@ -44,21 +44,23 @@ class ClusterControllerNode(Node):
     
     def CVelCb(self, msg: Vel):
         self.c_dot_ = [msg.x_dot, msg.y_dot, msg.th_dot, 0, 0, 0, 0, 0, 0]
-        self.get_logger().info("\n\nCC got: [" + " ".join(self.c_dot_))
+        self.get_logger().info("\n\nCC got: [" + " ".join([str(c) for c in self.c_dot_]))
 
     def OdomCb(self, id, msg: Odometry):
         x, y = msg.pose.pose.position.x, msg.pose.pose.position.y #only care about x and y
         o = msg.pose.pose.orientation
         yaw = euler_from_quaternion([o.w, o.x, o.y, o.z])[-1]
         self.robot_pose_dict_[id] = [x, y, yaw]
+        self.get_logger().info("Id: {}\n\tPose: {}".format(id, " ".join([str(e) for e in [x, y, yaw]])))
         if (len(self.robot_pose_dict_) == 3):
             self.cc_.UpdatePose(id, [x, y, yaw])
             
     
     def CalculateAndPublishRDot(self):
-        self.get_logger().info("\n\nCalculating R_dot with C_dot: [" + " ".join([str(c) for c in self.c_dot_]))
+        self.get_logger().info("Calculating R_dot with C_dot: [" + " ".join([str(c) for c in self.c_dot_]))
         self.r_dot_ = self.cc_.CalculateRDot(self.c_dot_)
 
+        self.get_logger().info("R_dot: [{}]".format(" ".join([str(r) for r in self.r_dot_])))
         r_dot_1, r_dot_2, r_dot_3 = self.r_dot_[0:3], self.r_dot_[3:6], self.r_dot_[6:9]
         wp_msg_1, wp_msg_2, wp_msg_3 = Pose(), Pose(), Pose()
 
