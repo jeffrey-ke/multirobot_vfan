@@ -2,7 +2,7 @@
 robot1:
   topics:
     - /robot1/wp
-    - /robot1/odom
+    - /robot1/pose
   pose:
     - 0.0
     - 0.0
@@ -10,16 +10,16 @@ robot1:
 robot2:
   topics:
     - /robot2/wp
-    - /robot2/odom
+    - /robot2/pose
   pose:
     - 5.0
-    - 0.0
+    - 2.5
     - 0.0
 robot3:
   topics:
     - /robot3/wp
-    - /robot3/odom
+    - /robot3/pose
   pose:
-    - 2.5
+    - 0.0
     - 5.0
     - 0.0
