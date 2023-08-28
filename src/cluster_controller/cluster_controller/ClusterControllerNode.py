@@ -1,9 +1,10 @@
 import rclpy
 from rclpy.node import Node
 from .ClusterController import ClusterController
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose as GeometryPose
 from nav_msgs.msg import Odometry
-from custom_msgs.msg import Vel, Pose
+from custom_msgs.msg import Vel 
+from custom_msgs.msg import Pose as CustomPose
 from tf_transformations import euler_from_quaternion
 import time
 from yaml import load
@@ -26,11 +27,11 @@ class ClusterControllerNode(Node):
         self.c_vel_sub_ = self.create_subscription(Vel, "/cluster_controller/c_vel", self.CVelCb, 10)
         for id in config.keys():
             wp_topic, pose_topic = config[id]["topics"]
-            self.topic_subs_[pose_topic] = self.create_subscription(Pose, 
+            self.topic_subs_[pose_topic] = self.create_subscription(GeometryPose, 
                                                                     pose_topic, 
                                                                     lambda msg, id=id: self.PoseCb(id, msg), 
                                                                     10)
-            self.topic_pubs_[wp_topic] = self.create_publisher(Pose,
+            self.topic_pubs_[wp_topic] = self.create_publisher(CustomPose,
                                                                 wp_topic,
                                                                 10)
             
@@ -51,7 +52,9 @@ class ClusterControllerNode(Node):
         o = msg.orientation
         yaw = euler_from_quaternion([o.w, o.x, o.y, o.z])[-1]
         self.robot_pose_dict_[id] = [x, y, yaw]
+        self.get_logger().info("\n\n=============================\n\n")
         self.get_logger().info("Id: {}\n\tPose: {}".format(id, " ".join([str(e) for e in [x, y, yaw]])))
+        self.get_logger().info("\n\n=============================\n\n")
         self.cc_.UpdatePose(id, [x, y, yaw])
             
     
@@ -61,7 +64,7 @@ class ClusterControllerNode(Node):
 
         self.get_logger().info("R_dot: [{}]".format(" ".join([str(r) for r in self.r_dot_])))
         r_dot_1, r_dot_2, r_dot_3 = self.r_dot_[0:3], self.r_dot_[3:6], self.r_dot_[6:9]
-        wp_msg_1, wp_msg_2, wp_msg_3 = Pose(), Pose(), Pose()
+        wp_msg_1, wp_msg_2, wp_msg_3 = CustomPose(), CustomPose(), CustomPose()
 
         if len(self.topic_pubs_) != 3:
             raise Exception("Something wrong with config. 3 robots not spawned.")
@@ -73,7 +76,6 @@ class ClusterControllerNode(Node):
             wp_msg.theta = float(r_dot[2])
             self.topic_pubs_[topic].publish(wp_msg)
             self.get_logger().info("\n\nPublishing waypoints..")
-            self.get_logger().info("\tTopic: {}".format(topic))
 
 def main(args=None):
     rclpy.init(args=args)
