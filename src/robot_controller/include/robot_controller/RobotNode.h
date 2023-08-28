@@ -16,6 +16,7 @@ private:
     rclcpp::Subscription<custom_msgs::msg::Pose>::SharedPtr wp_sub_;
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr pose_sub_; 
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmdvel_pub_;
+    rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_pub_;
     Controller controller_;
     geometry_msgs::msg::Twist cmdvel_msg_;
     double init_x_;

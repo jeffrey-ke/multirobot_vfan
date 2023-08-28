@@ -17,6 +17,8 @@ RobotNode::RobotNode(): Node("robot_node"), controller_(1.0, 0.2)
     pose_sub_ = create_subscription<nav_msgs::msg::Odometry>(
                                 "/" + name + "/odom", 10, 
                                 std::bind(&RobotNode::PoseCb, this, std::placeholders::_1));
+    pose_pub_ = create_publisher<geometry_msgs::msg::Pose>(
+                                "/" + name + "/pose", 10);
     cmdvel_pub_ = create_publisher<geometry_msgs::msg::Twist>(
                                 "/" + name + "/cmd_vel", 10);
                                 
@@ -47,15 +49,23 @@ void RobotNode::PoseCb(const nav_msgs::msg::Odometry& msg) {
     auto pose = msg.pose.pose.position;
     auto quat = msg.pose.pose.orientation;
     auto yaw = controller_.QuaternionToEuler({quat.w, quat.x, quat.y, quat.z}).yaw;
+    auto actual_pose_x = pose.x + init_x_; auto actual_pose_y = pose.y + init_y_;
+
     RCLCPP_INFO_STREAM(get_logger(), "Name: " << get_parameter("name").as_string() 
-                                    << "Actual pose [x: " << init_x_ + pose.x 
+                                    << "\nActual pose [x: " << init_x_ + pose.x 
                                                 << " y:" << init_y_ + pose.y << "]");
-    controller_.UpdatePose(init_x_ + pose.x, init_y_ + pose.y, yaw);
+    controller_.UpdatePose(actual_pose_x, actual_pose_y, yaw);
     controller_.UpdateCmdVel();
     CmdVel cmdvel = controller_.GetCmdVel();
     cmdvel_msg_.angular.z = cmdvel.angular_speed;
     cmdvel_msg_.linear.x = cmdvel.speed;
     cmdvel_pub_->publish(cmdvel_msg_);
+
+    auto pose_msg = geometry_msgs::msg::Pose();
+    pose_msg.position.x = actual_pose_x;
+    pose_msg.position.y = actual_pose_y;
+    pose_msg.orientation = quat;
+    pose_pub_->publish(pose_msg);
 }
 
 int main(int argc, char* argv[]) {

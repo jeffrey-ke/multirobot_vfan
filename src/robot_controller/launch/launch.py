@@ -43,7 +43,7 @@ def generate_launch_description():
             name="robot3",
             parameters= [{
                 "name" : "robot3",
-                "init_x": 0,
+                "init_x": 0.0,
                 "init_y": 5.0
             }]
         ),
