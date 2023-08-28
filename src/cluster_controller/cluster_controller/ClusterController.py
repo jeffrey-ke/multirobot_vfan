@@ -37,7 +37,7 @@ class ClusterController:
         Matrix form of the kinematic transform
     """
     KIN_ = Matrix([x_c_, y_c_, theta_c_, phi_1_, phi_2_, phi_3_, p_, q_, beta_])
-    R_ = Matrix([x1_, x2_, theta_1_, x2_, y2_, theta_2_, x3_, y3_, theta_3_])
+    R_ = Matrix([x1_, y1_, theta_1_, x2_, y2_, theta_2_, x3_, y3_, theta_3_])
     
     """
         Jacobian is a function that evaluates and returns J(R) as a numpy matrix. Todo: stop building the lambda function
@@ -78,10 +78,12 @@ class ClusterController:
             print(len(R))
             raise Exception("Big problem. You don't have 3 correct poses of three variables \
                             x, y, and theta.")
+        print("R: " + " ".join([str(r) for r in R]))
         J_with_current_values = self.Jacobian(R[0], R[1], R[2], R[3], R[4], R[5], R[6], R[7], R[8])
         np.nan_to_num(J_with_current_values, posinf=0.0, neginf=0.0, copy=False)
 
         if (np.isclose(np.linalg.det(J_with_current_values), 0)):
+            print("Singular matrix??")
             return np.array([0, 0, 0, 0, 0, 0, 0, 0, 0])
         else:
             return np.linalg.inv(J_with_current_values) @ c_dot
