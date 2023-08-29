@@ -19,6 +19,7 @@ private:
     rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_pub_;
     Controller controller_;
     geometry_msgs::msg::Twist cmdvel_msg_;
+    geometry_msgs::msg::Pose pose_;
     double init_x_;
     double init_y_;
 public:

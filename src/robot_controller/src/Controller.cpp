@@ -34,14 +34,14 @@ void Controller::UpdateCmdVel() {
 double Controller::CalculateAngularError() {
     double heading_des = std::atan2(wp_.y - pose_.y, wp_.x - pose_.x);
     auto heading_error = heading_des - pose_.theta;
-    return (heading_error > MIN_HEAD_ERR)? heading_error : 0.0;
+    return heading_error;
 }
 
 double Controller::CalculateDistanceError() {
     double deltaX = wp_.x - pose_.x;
     double deltaY = wp_.y - pose_.y;
     auto distance_error = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-    return (distance_error > MIN_DIS_ERR)? distance_error : 0.0;
+    return (abs(distance_error) > MIN_DIS_ERR)? distance_error : 0.0;
 }
 
 Quaternion Controller::Normalize(const Quaternion& q) {

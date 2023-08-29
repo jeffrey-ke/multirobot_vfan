@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 #define MIN_DIS_ERR 0.1
-#define MIN_HEAD_ERR 0.01
+#define MIN_HEAD_ERR 0.001
 
 typedef struct Pose {
     double x;

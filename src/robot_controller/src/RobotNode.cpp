@@ -41,8 +41,12 @@ void RobotNode::WaypointCb(const custom_msgs::msg::Pose& msg) {
     cmdvel_msg_.linear.x = cmdvel.speed;
 
     cmdvel_pub_->publish(cmdvel_msg_);
+    RCLCPP_INFO_STREAM(get_logger(), "My pose: \n\t x: " << pose_.position.x
+                                            << "\n\t y: " << pose_.position.y);
     RCLCPP_INFO_STREAM(get_logger(), "waypoint: \n\t x: " << controller_.GetWp().x 
                                             << "\n\t y: " << controller_.GetWp().y);
+    RCLCPP_INFO_STREAM(get_logger(), "Commanded velocity: \n\t speed: " << cmdvel.speed
+                                              << "\n\t angular_speed: " << cmdvel.angular_speed);
 }
 
 void RobotNode::PoseCb(const nav_msgs::msg::Odometry& msg) {
@@ -61,11 +65,11 @@ void RobotNode::PoseCb(const nav_msgs::msg::Odometry& msg) {
     cmdvel_msg_.linear.x = cmdvel.speed;
     cmdvel_pub_->publish(cmdvel_msg_);
 
-    auto pose_msg = geometry_msgs::msg::Pose();
-    pose_msg.position.x = actual_pose_x;
-    pose_msg.position.y = actual_pose_y;
-    pose_msg.orientation = quat;
-    pose_pub_->publish(pose_msg);
+    
+    pose_.position.x = actual_pose_x;
+    pose_.position.y = actual_pose_y;
+    pose_.orientation = quat;
+    pose_pub_->publish(pose_);
 }
 
 int main(int argc, char* argv[]) {
